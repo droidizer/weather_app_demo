@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="five_days" type="id">5 days forecast</item>
+    <item name="current" type="id">Current forecast</item>
+    <item name="seven_days" type="id">7 days forecast</item>
+    <item name="sixteen_days" type="id">16 days forecast</item>
+
+</resources>
