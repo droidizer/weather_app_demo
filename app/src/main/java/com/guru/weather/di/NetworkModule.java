@@ -24,7 +24,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
-public class NetworkModule {
+class NetworkModule {
 
     private static final int CONNECTION_TIMEOUT_SECS = 20;
 

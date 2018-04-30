@@ -3,8 +3,7 @@ package com.guru.weather;
 import android.app.Activity;
 
 import android.app.Application;
-
-import com.guru.weather.di.Component;
+import com.guru.weather.di.DaggerComponent;
 
 import javax.inject.Inject;
 
@@ -17,11 +16,10 @@ public class WeatherApplication extends Application implements HasActivityInject
     @Inject
     DispatchingAndroidInjector<Activity> mAndroidActivityInjector;
 
-    private Component mComponent;
-
     @Override
     public void onCreate() {
         super.onCreate();
+        DaggerComponent.builder().application(this).build().inject(this);
     }
 
     @Override

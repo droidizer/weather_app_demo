@@ -1,11 +1,9 @@
 package com.guru.weather.di;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.guru.weather.WeatherApplication;
 
 import javax.inject.Singleton;
 
@@ -13,23 +11,11 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class SystemModule {
-
-    private final Application application;
-
-    public SystemModule(Application application) {
-        this.application = application;
-    }
+class SystemModule {
 
     @Singleton
     @Provides
-    public Context providesContext() {
-        return application;
-    }
-
-    @Singleton
-    @Provides
-    public Application providesApplication() {
+    public Context providesContext(WeatherApplication application) {
         return application;
     }
 

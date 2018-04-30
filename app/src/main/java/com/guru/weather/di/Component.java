@@ -19,8 +19,6 @@ public interface Component {
         @BindsInstance
         Builder application(WeatherApplication application);
 
-        Builder systemModule(SystemModule systemModule);
-
         Component build();
     }
 }
