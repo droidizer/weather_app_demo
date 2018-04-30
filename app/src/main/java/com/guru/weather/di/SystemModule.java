@@ -4,6 +4,9 @@ import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -20,7 +23,7 @@ public class SystemModule {
 
     @Singleton
     @Provides
-    public Context provideContext() {
+    public Context providesContext() {
         return application;
     }
 
@@ -32,7 +35,8 @@ public class SystemModule {
 
     @Singleton
     @Provides
-    public Resources provideResources(Context context) {
+    public Resources providesResources(Context context) {
         return context.getResources();
     }
+
 }

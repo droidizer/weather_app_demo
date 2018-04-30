@@ -8,10 +8,7 @@ import dagger.BindsInstance;
 import dagger.android.support.AndroidSupportInjectionModule;
 
 @Singleton
-@dagger.Component(modules = {
-        AndroidSupportInjectionModule.class,
-        BuildersModule.class,
-        SystemModule.class})
+@dagger.Component(modules = {AndroidSupportInjectionModule.class, BuildersModule.class, SystemModule.class, NetworkModule.class})
 public interface Component {
 
     void inject(WeatherApplication weatherApplication);

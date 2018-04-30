@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Weather Check</string>
+    <string name="app_name">Weather Forecast</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="connection_error">Connection Error! Please check your connectivity and try again.</string>
@@ -16,7 +16,7 @@
     <string name="user_message">Enter the correct city name for best results.</string>
     <string name="city">City</string>
     <string name="current_weather">Current Weather Fragment</string>
-    <string name="key">259cad6720d80786a38f99146a9f3521</string>
+    <string name="weather_key">259cad6720d80786a38f99146a9f3521</string>
     <string name="places_key">AIzaSyDWyer-rrNHr_B3-JDL-_KUnUGxRSd1BoU</string>
 
 </resources>
