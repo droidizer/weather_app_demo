@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class WeatherModel {
+public class WeatherForecastModel {
 
     @SerializedName("list")
     private List<Forecast> list;
@@ -13,7 +13,7 @@ public class WeatherModel {
         return list;
     }
 
-    public WeatherModel setForecast(List<Forecast> list) {
+    public WeatherForecastModel setForecast(List<Forecast> list) {
         this.list = list;
         return this;
     }
@@ -23,7 +23,7 @@ public class WeatherModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        WeatherModel that = (WeatherModel) o;
+        WeatherForecastModel that = (WeatherForecastModel) o;
 
         return list != null ? list.equals(that.list) : that.list == null;
 
@@ -36,7 +36,7 @@ public class WeatherModel {
 
     @Override
     public String toString() {
-        return "WeatherModel{" +
+        return "WeatherForecastModel{" +
                 "list=" + list +
                 '}';
     }
