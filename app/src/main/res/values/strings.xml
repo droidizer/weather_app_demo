@@ -18,5 +18,6 @@
     <string name="current_weather">Current Weather Fragment</string>
     <string name="weather_key">259cad6720d80786a38f99146a9f3521</string>
     <string name="places_key">AIzaSyDWyer-rrNHr_B3-JDL-_KUnUGxRSd1BoU</string>
+    <string name="berlin">Berlin</string>
 
 </resources>
