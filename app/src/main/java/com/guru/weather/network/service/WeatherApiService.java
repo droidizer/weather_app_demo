@@ -6,13 +6,14 @@ import com.guru.weather.models.WeatherForecastModel;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface WeatherApiService {
 
-    @GET("/weather?&q={city}&lang=en&APPID={api_key}")
-    Observable<Forecast> getWeather(@Path("api_key") String key, @Path("city") String cityName);
+    //Todo - Improvise for different cities
+    @GET("weather?&q=Berlin")
+    Observable<Forecast> getWeather(@Query("APPID") String key);
 
-    @GET("/forecast/daily?&q={city}&lang=en&cnt={count}&APPID={api_key")
-    Observable<WeatherForecastModel> getWeatherForecast(@Path("api_key") String key, @Path("city") String cityName, @Path("count") int count);
+    @GET("forecast/daily?&q=Berlin")
+    Observable<WeatherForecastModel> getWeatherForecast(@Query("cnt") int count, @Query("APPID") String key);
 }

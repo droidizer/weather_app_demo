@@ -30,7 +30,7 @@ class NetworkModule {
 
     private static final long HTTP_RESPONSE_DISK_CACHE_MAX_SIZE = 5 * 1024 * 1024;
 
-    private static final String BASE_WEATHER_URL = "http://api.openweathermap.org/data/2.5";
+    private static final String BASE_WEATHER_URL = "https://api.openweathermap.org/data/2.5/";
 
     private static final String BASE_PLACES_URL = "https://maps.googleapis.com/maps/api/place/autocomplete";
 

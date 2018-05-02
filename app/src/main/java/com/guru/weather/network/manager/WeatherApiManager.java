@@ -11,15 +11,11 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.disposables.Disposables;
 
 @Singleton
 public class WeatherApiManager implements IWeatherApiManager {
 
     private final WeatherApiService mWeatherApiService;
-
-    private Disposable mWeatherDisposable = Disposables.disposed();
 
     @Inject
     Resources mResources;
@@ -31,11 +27,11 @@ public class WeatherApiManager implements IWeatherApiManager {
 
     @Override
     public Observable<Forecast> getWeather(String city) {
-        return mWeatherApiService.getWeather(mResources.getString(R.string.weather_key), city);
+        return mWeatherApiService.getWeather(mResources.getString(R.string.weather_key));
     }
 
     @Override
     public Observable<WeatherForecastModel> getWeatherForecast(String cityName, int count) {
-        return mWeatherApiService.getWeatherForecast(mResources.getString(R.string.weather_key), cityName, count);
+        return mWeatherApiService.getWeatherForecast(count, mResources.getString(R.string.weather_key));
     }
 }
