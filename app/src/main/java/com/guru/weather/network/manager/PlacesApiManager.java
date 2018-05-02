@@ -13,7 +13,7 @@ import javax.inject.Singleton;
 import io.reactivex.Observable;
 
 @Singleton
-public class PlacesApiManager {
+public class PlacesApiManager implements IPlacesApiManager {
 
     private final PlacesApiService mPlacesApiService;
     private final Resources mResources;
@@ -24,7 +24,8 @@ public class PlacesApiManager {
         mResources = resources;
     }
 
-    public Observable<Places> getCity(String input) {
+    @Override
+    public Observable<Places> getCity(String key, String input) {
         return mPlacesApiService.getCity(mResources.getString(R.string.places_key), input);
     }
 }
