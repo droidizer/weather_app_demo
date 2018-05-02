@@ -5,15 +5,15 @@ import com.guru.weather.network.manager.IWeatherApiManager;
 import com.guru.weather.network.manager.PlacesApiManager;
 import com.guru.weather.network.manager.WeatherApiManager;
 
-import dagger.Binds;
 import dagger.Module;
+import dagger.Provides;
 
 @Module
 public abstract class ManagersModule {
 
-    @Binds
+    @Provides
     public abstract IWeatherApiManager provideWeatherApiManager(WeatherApiManager weatherApiManager);
 
-    @Binds
+    @Provides
     public abstract IPlacesApiManager providePlacesApiManager(PlacesApiManager placesApiManager);
 }
