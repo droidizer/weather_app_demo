@@ -8,7 +8,7 @@ import io.reactivex.Observable;
 
 public interface IWeatherApiManager {
 
-    Observable<Forecast> getWeather(String city);
+    Observable<Forecast> getWeather();
 
-    Observable<WeatherForecastModel> getWeatherForecast(String cityName, int count);
+    Observable<WeatherForecastModel> getWeatherForecast(int count);
 }

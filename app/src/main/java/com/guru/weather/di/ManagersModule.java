@@ -7,7 +7,6 @@ import com.guru.weather.network.manager.WeatherApiManager;
 
 import dagger.Binds;
 import dagger.Module;
-import dagger.Provides;
 
 @Module
 public abstract class ManagersModule {

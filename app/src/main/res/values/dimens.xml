@@ -5,9 +5,10 @@
     <dimen name="margin_top">60dp</dimen>
     <dimen name="heading_text_size">15sp</dimen>
     <dimen name="padding_20">20dp</dimen>
-    <dimen name="padding_10">10dp</dimen>
+    <dimen name="padding_8">8dp</dimen>
     <dimen name="padding_5">5dp</dimen>
     <dimen name="padding_top">40dp</dimen>
-    <dimen name="tempTextSize">72sp</dimen>
-
+    <dimen name="tempTextSize">36sp</dimen>
+    <dimen name="margin_24">24dp</dimen>
+    <dimen name="padding_4"> 4dp </dimen>
 </resources>

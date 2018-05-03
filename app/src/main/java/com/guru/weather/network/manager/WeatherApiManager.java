@@ -26,12 +26,12 @@ public class WeatherApiManager implements IWeatherApiManager {
     }
 
     @Override
-    public Observable<Forecast> getWeather(String city) {
+    public Observable<Forecast> getWeather() {
         return mWeatherApiService.getWeather(mResources.getString(R.string.weather_key));
     }
 
     @Override
-    public Observable<WeatherForecastModel> getWeatherForecast(String cityName, int count) {
+    public Observable<WeatherForecastModel> getWeatherForecast(int count) {
         return mWeatherApiService.getWeatherForecast(count, mResources.getString(R.string.weather_key));
     }
 }

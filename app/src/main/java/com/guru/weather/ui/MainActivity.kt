@@ -19,6 +19,6 @@ class MainActivity : AndroidBaseInjectableActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewModel = ViewModelProviders.of(this, mFactory).get(WeatherViewModel::class.java)
-        setContentView(R.layout.activity_main, BR.weatherViewModel, mViewModel)
+        setContentView(R.layout.fragment_current_weather, BR.weatherViewModel, mViewModel)
     }
 }
