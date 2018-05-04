@@ -8,17 +8,16 @@ import com.guru.weather.ui.viewmodel.WeatherViewModel
 import com.guru.weather.utils.AndroidBaseInjectableActivity
 import javax.inject.Inject
 
-
 class MainActivity : AndroidBaseInjectableActivity() {
 
     @Inject
     lateinit var mFactory: WeatherViewModel.Factory
 
-    lateinit var mViewModel: WeatherViewModel
+    private lateinit var mViewModel: WeatherViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewModel = ViewModelProviders.of(this, mFactory).get(WeatherViewModel::class.java)
-        setContentView(R.layout.fragment_current_weather, BR.weatherViewModel, mViewModel)
+        setContentView(R.layout.activity_main, BR.weatherViewModel, mViewModel)
     }
 }
