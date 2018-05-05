@@ -11,4 +11,5 @@
     <dimen name="tempTextSize">36sp</dimen>
     <dimen name="margin_24">24dp</dimen>
     <dimen name="padding_4"> 4dp </dimen>
+    <dimen name="padding_10">8dp</dimen>
 </resources>

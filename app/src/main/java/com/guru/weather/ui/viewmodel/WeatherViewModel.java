@@ -5,6 +5,7 @@ import com.guru.weather.R;
 import com.guru.weather.models.Forecast;
 import com.guru.weather.network.manager.IWeatherApiManager;
 import com.guru.weather.utils.AndroidBaseViewModel;
+import com.guru.weather.utils.rv.AndroidItemBinder;
 
 import android.app.Application;
 import android.arch.lifecycle.ViewModel;
@@ -15,6 +16,11 @@ import android.support.annotation.NonNull;
 import android.util.Pair;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -51,6 +57,10 @@ public class WeatherViewModel extends AndroidBaseViewModel {
 
     private Resources mResources;
 
+    private Map<Class<?>, AndroidItemBinder> mTemplates;
+
+    private List<WeatherForecastViewModel> mForecastList = new ArrayList<>();
+
     public WeatherViewModel(Application application, Resources resources, IWeatherApiManager weatherApiManager) {
         super(application);
         mWeatherApiManager = weatherApiManager;
@@ -62,11 +72,14 @@ public class WeatherViewModel extends AndroidBaseViewModel {
         super.onCreate();
         setLoading(true);
         if (mWeatherDisposable.isDisposed()) {
-            mWeatherDisposable = Observable.zip(mWeatherApiManager.getWeather(), mWeatherApiManager.getWeatherForecast(7),
+            mWeatherDisposable = Observable.zip(mWeatherApiManager.getWeather(), mWeatherApiManager.getWeatherForecast(10),
                     Pair::new)
                     .subscribe(forecast -> {
                         setLoading(false);
-                        setResults(forecast.first);
+                        if (!forecast.second.getForecast().isEmpty()) {
+                            for (Forecast f : forecast.second.getForecast())
+                                mForecastList.add(new WeatherForecastViewModel(f));
+                        }
                         notifyBindings();
                     }, throwable -> {
                         setLoading(false);
@@ -75,17 +88,18 @@ public class WeatherViewModel extends AndroidBaseViewModel {
         }
     }
 
-    private void setResults(Forecast forecast) {
-        if (forecast.main != null) {
-            setDayTemp(forecast.main.temp);
-            setHumidity(forecast.main.humidity);
-            setMaxTemp(forecast.main.tempMax);
-            setMinTemp(forecast.main.tempMin);
-            setPressure(forecast.main.pressure);
+    @Bindable
+    public Map<Class<?>, AndroidItemBinder> getTemplatesForObjects() {
+        if (mTemplates == null) {
+            mTemplates = new HashMap<>();
+            mTemplates.put(WeatherForecastViewModel.class, new AndroidItemBinder(R.layout.weather_forecast_item, BR.weatherViewModel));
         }
-        if (forecast.weather != null && !forecast.weather.isEmpty()) {
-            setWeatherReport(forecast.weather.get(0).title);
-        }
+        return mTemplates;
+    }
+
+    @Bindable
+    public List<?> getForecastItems() {
+        return mForecastList;
     }
 
     private void notifyError(Throwable throwable) {
@@ -99,87 +113,15 @@ public class WeatherViewModel extends AndroidBaseViewModel {
 
     public void setErrorMessage(String message) {
         mErrorMessage = message;
-        notifyPropertyChanged(BR.errorMessage);
     }
 
     private void setErrorVisible(boolean errorVisible) {
         mErrorVisible = !isLoading() && errorVisible;
-        notifyPropertyChanged(BR.errorVisible);
     }
 
     public void notifyBindings() {
-        notifyPropertyChanged(BR.weatherReport);
-        notifyPropertyChanged(BR.dayTemp);
-        notifyPropertyChanged(BR.humidity);
-        notifyPropertyChanged(BR.maxTemp);
-        notifyPropertyChanged(BR.minTemp);
-        notifyPropertyChanged(BR.pressure);
+        notifyPropertyChanged(BR.forecastItems);
     }
-
-    public void setHumidity(int humidity) {
-        mHumidity = "Humidity: ".concat(String.valueOf(humidity)).concat(" %");
-    }
-
-    public void setMinTemp(double tempMin) {
-        mMinTemp = "Min tem: ".concat(String.valueOf(kelvinToCelcius(tempMin))).concat(" deg C");
-    }
-
-    public void setMaxTemp(double tempMax) {
-        mMaxTemp = "Max temp: ".concat(String.valueOf(kelvinToCelcius(tempMax))).concat(" deg C");
-    }
-
-    public void setPressure(double pressure) {
-        mPressure = "Pressure: ".concat(String.valueOf(pressure)).concat(" hPa");
-    }
-
-    public void setWeatherReport(String title) {
-        mWeatherReport = title;
-    }
-
-    public void setDayTemp(double temp) {
-        mDayTemp = String.valueOf(kelvinToCelcius(temp));
-    }
-
-    @Bindable
-    public String getWeatherReport() {
-        return mWeatherReport;
-    }
-
-    @Bindable
-    public String getDayTemp() {
-        return mDayTemp;
-    }
-
-    @Bindable
-    public String getHumidity() {
-        return mHumidity;
-    }
-
-    @Bindable
-    public String getMaxTemp() {
-        return mMaxTemp;
-    }
-
-    @Bindable
-    public String getMinTemp() {
-        return mMinTemp;
-    }
-
-    @Bindable
-    public String getPressure() {
-        return mPressure;
-    }
-
-    @Bindable
-    public boolean getErrorVisible() {
-        return mErrorVisible;
-    }
-
-    @Bindable
-    public String getErrorMessage() {
-        return mErrorMessage;
-    }
-
     private void setLoading(boolean loading) {
         mLoading = loading;
         notifyPropertyChanged(BR.loading);
@@ -207,7 +149,7 @@ public class WeatherViewModel extends AndroidBaseViewModel {
 
         @Inject
         public Factory(@NonNull Application application, Resources resources,
-                IWeatherApiManager weatherApiManager) {
+                       IWeatherApiManager weatherApiManager) {
             mApplication = application;
             mWeatherApiManager = weatherApiManager;
             mResources = resources;

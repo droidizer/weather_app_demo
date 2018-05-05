@@ -5,4 +5,7 @@
     <color name="light_red">#FD777B</color>
     <color name="gray">#4d4d4d</color>
     <color name="light_gray">#e0e0e0</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="darker_gray">#222222</color>
 </resources>
