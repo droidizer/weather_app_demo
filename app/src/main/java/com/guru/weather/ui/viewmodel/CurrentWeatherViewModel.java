@@ -1,13 +1,15 @@
 package com.guru.weather.ui.viewmodel;
 
+import android.app.Application;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
 import com.guru.weather.models.Forecast;
+import com.guru.weather.utils.AndroidBaseViewModel;
 
 import static com.guru.weather.misc.AppUtils.kelvinToCelcius;
 
-public class CurrentWeatherViewModel extends BaseObservable {
+public class CurrentWeatherViewModel extends AndroidBaseViewModel {
 
     private String mHumidity;
 
@@ -21,7 +23,8 @@ public class CurrentWeatherViewModel extends BaseObservable {
 
     private String mTempNow;
 
-    public CurrentWeatherViewModel(Forecast forecast) {
+    CurrentWeatherViewModel(Application application, Forecast forecast) {
+        super(application);
         setResults(forecast);
     }
 
@@ -43,7 +46,7 @@ public class CurrentWeatherViewModel extends BaseObservable {
     }
 
     public void setMinTemp(double tempMin) {
-        mMinTemp = "Min tem: ".concat(String.valueOf(kelvinToCelcius(tempMin))).concat(" deg C");
+        mMinTemp = "Min temp: ".concat(String.valueOf(kelvinToCelcius(tempMin))).concat(" deg C");
     }
 
     public void setMaxTemp(double tempMax) {
@@ -62,32 +65,26 @@ public class CurrentWeatherViewModel extends BaseObservable {
         mTempNow = String.valueOf(kelvinToCelcius(temp));
     }
 
-    @Bindable
     public String getWeatherReport() {
         return mWeatherReport;
     }
 
-    @Bindable
     public String getTempNow() {
         return mTempNow;
     }
 
-    @Bindable
     public String getHumidity() {
         return mHumidity;
     }
 
-    @Bindable
     public String getMaxTemp() {
         return mMaxTemp;
     }
 
-    @Bindable
     public String getMinTemp() {
         return mMinTemp;
     }
 
-    @Bindable
     public String getPressure() {
         return mPressure;
     }

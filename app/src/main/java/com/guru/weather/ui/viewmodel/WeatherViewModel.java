@@ -6,19 +6,22 @@ import com.guru.weather.models.Forecast;
 import com.guru.weather.network.manager.IWeatherApiManager;
 import com.guru.weather.utils.AndroidBaseViewModel;
 import com.guru.weather.utils.rv.AndroidItemBinder;
+import com.guru.weather.utils.rv.ItemClickListener;
 
 import android.app.Application;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.res.Resources;
 import android.databinding.Bindable;
+import android.graphics.Rect;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
+import android.view.View;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,25 +32,11 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
 import retrofit2.HttpException;
 
-import static com.guru.weather.misc.AppUtils.kelvinToCelcius;
-
 public class WeatherViewModel extends AndroidBaseViewModel {
 
     private final IWeatherApiManager mWeatherApiManager;
 
     private Disposable mWeatherDisposable = Disposables.disposed();
-
-    private String mHumidity;
-
-    private String mMinTemp;
-
-    private String mMaxTemp;
-
-    private String mPressure;
-
-    private String mWeatherReport;
-
-    private String mDayTemp;
 
     private boolean mLoading;
 
@@ -59,12 +48,52 @@ public class WeatherViewModel extends AndroidBaseViewModel {
 
     private Map<Class<?>, AndroidItemBinder> mTemplates;
 
-    private List<WeatherForecastViewModel> mForecastList = new ArrayList<>();
+    private List<AndroidBaseViewModel> mForecastList = new ArrayList<>();
 
     public WeatherViewModel(Application application, Resources resources, IWeatherApiManager weatherApiManager) {
         super(application);
         mWeatherApiManager = weatherApiManager;
         mResources = resources;
+    }
+
+    public RecyclerView.ItemDecoration getItemDecoration() {
+        int bottomMargin = (int) mResources.getDimension(R.dimen.margin_4);
+        int horizontalMargin = (int) mResources.getDimension(R.dimen.activity_horizontal_margin);
+        return new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                int position = parent.getChildAdapterPosition(view);
+                if (position != 0) {
+                    try {
+                        AndroidBaseViewModel viewModel = mForecastList.get(position);
+                        if (viewModel instanceof WeatherForecastViewModel) {
+                            outRect.top = bottomMargin;
+                            outRect.right = horizontalMargin;
+                            outRect.left = horizontalMargin;
+                        }
+                    } catch (Exception e) {
+                    }
+                }
+            }
+        };
+    }
+
+    @Bindable
+    public String getErrorMessage() {
+        return mErrorMessage;
+    }
+
+    @Bindable
+    public boolean isErrorVisible() {
+        return mErrorVisible;
+    }
+
+    public ItemClickListener getItemClickListener() {
+        return ((view, item) -> {
+            if (item instanceof WeatherForecastViewModel) {
+
+            }
+        });
     }
 
     @Override
@@ -76,9 +105,10 @@ public class WeatherViewModel extends AndroidBaseViewModel {
                     Pair::new)
                     .subscribe(forecast -> {
                         setLoading(false);
+                        mForecastList.add(new CurrentWeatherViewModel(getApplication(), forecast.first));
                         if (!forecast.second.getForecast().isEmpty()) {
                             for (Forecast f : forecast.second.getForecast())
-                                mForecastList.add(new WeatherForecastViewModel(f));
+                                mForecastList.add(new WeatherForecastViewModel(getApplication(), f));
                         }
                         notifyBindings();
                     }, throwable -> {
@@ -88,10 +118,10 @@ public class WeatherViewModel extends AndroidBaseViewModel {
         }
     }
 
-    @Bindable
     public Map<Class<?>, AndroidItemBinder> getTemplatesForObjects() {
         if (mTemplates == null) {
             mTemplates = new HashMap<>();
+            mTemplates.put(CurrentWeatherViewModel.class, new AndroidItemBinder(R.layout.layout_current_weather, BR.currentWeatherViewModel));
             mTemplates.put(WeatherForecastViewModel.class, new AndroidItemBinder(R.layout.weather_forecast_item, BR.weatherViewModel));
         }
         return mTemplates;
@@ -113,15 +143,18 @@ public class WeatherViewModel extends AndroidBaseViewModel {
 
     public void setErrorMessage(String message) {
         mErrorMessage = message;
+        notifyPropertyChanged(BR.errorMessage);
     }
 
     private void setErrorVisible(boolean errorVisible) {
         mErrorVisible = !isLoading() && errorVisible;
+        notifyPropertyChanged(BR.errorVisible);
     }
 
     public void notifyBindings() {
         notifyPropertyChanged(BR.forecastItems);
     }
+
     private void setLoading(boolean loading) {
         mLoading = loading;
         notifyPropertyChanged(BR.loading);
@@ -130,6 +163,7 @@ public class WeatherViewModel extends AndroidBaseViewModel {
     @Override
     public void onDestroy() {
         mWeatherDisposable.dispose();
+        mForecastList = null;
         super.onDestroy();
     }
 

@@ -1,18 +1,22 @@
 package com.guru.weather.ui.viewmodel;
 
+import android.app.Application;
+
 import com.guru.weather.misc.AppUtils;
 import com.guru.weather.models.Forecast;
+import com.guru.weather.utils.AndroidBaseViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-public class WeatherForecastViewModel {
+public class WeatherForecastViewModel extends AndroidBaseViewModel{
 
     private final static String format = "MMM dd";
 
     private final Forecast mForecast;
 
-    WeatherForecastViewModel(Forecast forecast) {
+    WeatherForecastViewModel(Application application, Forecast forecast) {
+        super(application);
         mForecast = forecast;
     }
 

@@ -29,11 +29,6 @@ fun setItemViewBinder(recyclerView: RecyclerView, itemViewMapper: Map<Class<*>, 
     recyclerView.adapter = adapter
 }
 
-@BindingAdapter("nestedScrollingEnabled")
-fun setNestedScrollingEnabled(recyclerView: RecyclerView, nestedScrollingEnabled: Boolean) {
-    recyclerView.isNestedScrollingEnabled = nestedScrollingEnabled
-}
-
 @BindingAdapter("items")
 fun <T> setItems(recyclerView: RecyclerView, items: List<Any>) {
     recyclerView.setTag(KEY_ITEMS, items)
@@ -71,3 +66,11 @@ fun getPageDescriptor(recyclerView: AndroidBindableRecyclerView): PageDescriptor
 fun setSnapHelper(recyclerView: AndroidBindableRecyclerView, snapHelper: SnapHelper) {
     recyclerView.setSnapHelper(snapHelper)
 }
+
+@BindingAdapter("onItemClickListener")
+fun setOnItemClickListener(recyclerView: RecyclerView, clickListener: ItemClickListener) {
+    if (recyclerView is AndroidBindableRecyclerView) {
+        recyclerView.setOnItemClickListener(clickListener)
+    }
+}
+

@@ -80,6 +80,15 @@ public class AndroidBindableRecyclerView extends RecyclerView implements Recycle
 
     private GestureDetector mGestureDetector;
 
+    public void setOnItemClickListener(ItemClickListener l) {
+        if (l == null) {
+            return;
+        }
+        mGestureDetector = new GestureDetector(getContext(),
+                mRecyclerViewGestureListener = new RecyclerViewGestureListener(this));
+        mRecyclerViewGestureListener.setRecyclerViewClickListener(l);
+    }
+
     public AndroidBindableRecyclerView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
