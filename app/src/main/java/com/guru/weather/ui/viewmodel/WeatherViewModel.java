@@ -100,6 +100,10 @@ public class WeatherViewModel extends AndroidBaseViewModel {
     public void onCreate() {
         super.onCreate();
         setLoading(true);
+        subscribeForWeatherData();
+    }
+
+    private void subscribeForWeatherData() {
         if (mWeatherDisposable.isDisposed()) {
             mWeatherDisposable = Observable.zip(mWeatherApiManager.getWeather(), mWeatherApiManager.getWeatherForecast(10),
                     Pair::new)
