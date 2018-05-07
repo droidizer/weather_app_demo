@@ -15,7 +15,7 @@ public class WeatherForecastViewModel extends AndroidBaseViewModel{
 
     private final Forecast mForecast;
 
-    WeatherForecastViewModel(Application application, Forecast forecast) {
+    public WeatherForecastViewModel(Application application, Forecast forecast) {
         super(application);
         mForecast = forecast;
     }

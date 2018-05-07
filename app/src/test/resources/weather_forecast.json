@@ -1,0 +1,139 @@
+{
+  "city": {
+    "id": 2950159,
+    "name": "Berlin",
+    "coord": {
+      "lon": 13.3889,
+      "lat": 52.517
+    },
+    "country": "DE",
+    "population": 1000000
+  },
+  "cod": "200",
+  "message": 31.2778715,
+  "cnt": 5,
+  "list": [
+    {
+      "dt": 1525690800,
+      "temp": {
+        "day": 297.61,
+        "min": 285.61,
+        "max": 298.03,
+        "night": 285.61,
+        "eve": 295.49,
+        "morn": 296.15
+      },
+      "pressure": 1031.07,
+      "humidity": 58,
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "sky is clear",
+          "icon": "01d"
+        }
+      ],
+      "speed": 4.21,
+      "deg": 94,
+      "clouds": 0
+    },
+    {
+      "dt": 1525777200,
+      "temp": {
+        "day": 296.59,
+        "min": 288.2,
+        "max": 296.98,
+        "night": 288.2,
+        "eve": 294.89,
+        "morn": 288.48
+      },
+      "pressure": 1024.21,
+      "humidity": 50,
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "sky is clear",
+          "icon": "01d"
+        }
+      ],
+      "speed": 6.16,
+      "deg": 102,
+      "clouds": 0
+    },
+    {
+      "dt": 1525863600,
+      "temp": {
+        "day": 298.73,
+        "min": 290.52,
+        "max": 299.61,
+        "night": 292.74,
+        "eve": 298.11,
+        "morn": 290.52
+      },
+      "pressure": 1018.32,
+      "humidity": 49,
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "sky is clear",
+          "icon": "01d"
+        }
+      ],
+      "speed": 6.17,
+      "deg": 94,
+      "clouds": 0
+    },
+    {
+      "dt": 1525950000,
+      "temp": {
+        "day": 299.16,
+        "min": 283.74,
+        "max": 299.16,
+        "night": 283.74,
+        "eve": 290.52,
+        "morn": 293.11
+      },
+      "pressure": 1014.98,
+      "humidity": 54,
+      "weather": [
+        {
+          "id": 501,
+          "main": "Rain",
+          "description": "moderate rain",
+          "icon": "10d"
+        }
+      ],
+      "speed": 4.76,
+      "deg": 150,
+      "clouds": 8,
+      "rain": 9.27
+    },
+    {
+      "dt": 1526036400,
+      "temp": {
+        "day": 291.7,
+        "min": 284.17,
+        "max": 291.7,
+        "night": 284.17,
+        "eve": 290.52,
+        "morn": 288.43
+      },
+      "pressure": 1024.1,
+      "humidity": 0,
+      "weather": [
+        {
+          "id": 500,
+          "main": "Rain",
+          "description": "light rain",
+          "icon": "10d"
+        }
+      ],
+      "speed": 4.81,
+      "deg": 275,
+      "clouds": 32,
+      "rain": 0.5
+    }
+  ]
+}

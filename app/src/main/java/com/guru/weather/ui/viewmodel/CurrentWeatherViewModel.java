@@ -23,7 +23,7 @@ public class CurrentWeatherViewModel extends AndroidBaseViewModel {
 
     private String mTempNow;
 
-    CurrentWeatherViewModel(Application application, Forecast forecast) {
+    public CurrentWeatherViewModel(Application application, Forecast forecast) {
         super(application);
         setResults(forecast);
     }

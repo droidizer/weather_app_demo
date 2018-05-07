@@ -3,6 +3,7 @@ package com.guru.weather.ui.viewmodel;
 import com.guru.weather.BR;
 import com.guru.weather.R;
 import com.guru.weather.models.Forecast;
+import com.guru.weather.models.WeatherForecastModel;
 import com.guru.weather.network.manager.IWeatherApiManager;
 import com.guru.weather.utils.AndroidBaseViewModel;
 import com.guru.weather.utils.rv.AndroidItemBinder;
@@ -89,30 +90,34 @@ public class WeatherViewModel extends AndroidBaseViewModel {
     }
 
     public ItemClickListener getItemClickListener() {
-        return ((view, item) -> {
-            if (item instanceof WeatherForecastViewModel) {
+        return (view, item) -> handleClick();
+    }
 
-            }
-        });
+    public void handleClick() {
+        //No weather details item
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
         setLoading(true);
-        subscribeForWeatherData();
+        subscribeForCurrentWeatherData();
     }
 
-    private void subscribeForWeatherData() {
+    public void subscribeForCurrentWeatherData() {
         if (mWeatherDisposable.isDisposed()) {
             mWeatherDisposable = Observable.zip(mWeatherApiManager.getWeather(), mWeatherApiManager.getWeatherForecast(10),
-                    Pair::new)
+                    (first, second) -> getNewPair(first, second))
                     .subscribe(forecast -> {
                         setLoading(false);
-                        mForecastList.add(new CurrentWeatherViewModel(getApplication(), forecast.first));
-                        if (!forecast.second.getForecast().isEmpty()) {
-                            for (Forecast f : forecast.second.getForecast())
+                        mForecastList.clear();
+                        if (forecast != null && forecast.first != null) {
+                            mForecastList.add(new CurrentWeatherViewModel(getApplication(), forecast.first));
+                        }
+                        if (forecast != null && forecast.second != null && !forecast.second.getForecast().isEmpty()) {
+                            for (Forecast f : forecast.second.getForecast()) {
                                 mForecastList.add(new WeatherForecastViewModel(getApplication(), f));
+                            }
                         }
                         notifyBindings();
                     }, throwable -> {
@@ -120,6 +125,10 @@ public class WeatherViewModel extends AndroidBaseViewModel {
                         notifyError(throwable);
                     });
         }
+    }
+
+    public Pair<Forecast, WeatherForecastModel> getNewPair(Forecast first, WeatherForecastModel second) {
+        return new Pair<>(first, second);
     }
 
     public Map<Class<?>, AndroidItemBinder> getTemplatesForObjects() {
@@ -167,7 +176,7 @@ public class WeatherViewModel extends AndroidBaseViewModel {
     @Override
     public void onDestroy() {
         mWeatherDisposable.dispose();
-        mForecastList = null;
+        mForecastList.clear();
         super.onDestroy();
     }
 
@@ -187,7 +196,7 @@ public class WeatherViewModel extends AndroidBaseViewModel {
 
         @Inject
         public Factory(@NonNull Application application, Resources resources,
-                       IWeatherApiManager weatherApiManager) {
+                IWeatherApiManager weatherApiManager) {
             mApplication = application;
             mWeatherApiManager = weatherApiManager;
             mResources = resources;
