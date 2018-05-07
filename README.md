@@ -11,3 +11,5 @@ Add search for cities
 Convert to Kotlin 
 
 Add tests that use DI
+
+Reduce boilerplate code
