@@ -12,4 +12,6 @@ Convert to Kotlin
 
 Add tests that use DI
 
+Add more unit tests
+
 Reduce boilerplate code
