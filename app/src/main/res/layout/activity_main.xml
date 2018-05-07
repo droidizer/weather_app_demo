@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+
+        <import type="com.guru.weather.utils.rv.LayoutManagers" />
+
+        <import type="android.view.View" />
+
+        <variable
+                name="weatherViewModel"
+                type="com.guru.weather.ui.viewmodel.WeatherViewModel" />
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <com.guru.weather.utils.rv.AndroidBindableRecyclerView
+                android:id="@+id/weather_rv"
+                itemDecoration="@{weatherViewModel.itemDecoration}"
+                itemViewBinder="@{weatherViewModel.templatesForObjects}"
+                items="@{weatherViewModel.forecastItems}"
+                layoutManager="@{LayoutManagers.linear()}"
+                onItemClickListener="@{weatherViewModel.itemClickListener}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{weatherViewModel.loading? View.GONE: View.VISIBLE}" />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:text="@{weatherViewModel.errorMessage}"
+                android:visibility="@{weatherViewModel.errorVisible? View.VISIBLE: View.GONE}" />
+
+        <ProgressBar
+                android:id="@+id/progress_bar"
+                style="@style/Widget.AppCompat.ProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:visibility="@{weatherViewModel.loading? View.VISIBLE: View.GONE}" />
+    </FrameLayout>
+</layout>
