@@ -2,6 +2,7 @@ package com.guru.weather.ui.viewmodel;
 
 import com.guru.weather.BR;
 import com.guru.weather.R;
+import com.guru.weather.misc.MessageWrapper;
 import com.guru.weather.models.Forecast;
 import com.guru.weather.models.WeatherForecastModel;
 import com.guru.weather.network.manager.IWeatherApiManager;
@@ -17,7 +18,6 @@ import android.databinding.Bindable;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Pair;
 import android.view.View;
 
 import java.io.IOException;
@@ -31,9 +31,12 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
+import kotlin.Pair;
 import retrofit2.HttpException;
 
 public class WeatherViewModel extends AndroidBaseViewModel {
+
+    private static final int TEN_DAYS_FORECAST = 10;
 
     private final IWeatherApiManager mWeatherApiManager;
 
@@ -73,6 +76,7 @@ public class WeatherViewModel extends AndroidBaseViewModel {
                             outRect.left = horizontalMargin;
                         }
                     } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -95,6 +99,7 @@ public class WeatherViewModel extends AndroidBaseViewModel {
 
     public void handleClick() {
         //No weather details item
+        notifyMessage(R.string.item_clicked);
     }
 
     @Override
@@ -106,16 +111,16 @@ public class WeatherViewModel extends AndroidBaseViewModel {
 
     public void subscribeForCurrentWeatherData() {
         if (mWeatherDisposable.isDisposed()) {
-            mWeatherDisposable = Observable.zip(mWeatherApiManager.getWeather(), mWeatherApiManager.getWeatherForecast(10),
-                    (first, second) -> getNewPair(first, second))
+            mWeatherDisposable = Observable.zip(mWeatherApiManager.getWeather(), mWeatherApiManager.getWeatherForecast(TEN_DAYS_FORECAST),
+                    Pair::new)
                     .subscribe(forecast -> {
                         setLoading(false);
                         mForecastList.clear();
-                        if (forecast != null && forecast.first != null) {
-                            mForecastList.add(new CurrentWeatherViewModel(getApplication(), forecast.first));
+                        if (forecast != null && forecast.getFirst() != null) {
+                            mForecastList.add(new CurrentWeatherViewModel(getApplication(), forecast.getFirst()));
                         }
-                        if (forecast != null && forecast.second != null && !forecast.second.getForecast().isEmpty()) {
-                            for (Forecast f : forecast.second.getForecast()) {
+                        if (forecast != null && forecast.getSecond() != null && !forecast.getSecond().getForecast().isEmpty()) {
+                            for (Forecast f : forecast.getSecond().getForecast()) {
                                 mForecastList.add(new WeatherForecastViewModel(getApplication(), f));
                             }
                         }
@@ -125,10 +130,6 @@ public class WeatherViewModel extends AndroidBaseViewModel {
                         notifyError(throwable);
                     });
         }
-    }
-
-    public Pair<Forecast, WeatherForecastModel> getNewPair(Forecast first, WeatherForecastModel second) {
-        return new Pair<>(first, second);
     }
 
     public Map<Class<?>, AndroidItemBinder> getTemplatesForObjects() {
@@ -147,10 +148,11 @@ public class WeatherViewModel extends AndroidBaseViewModel {
 
     private void notifyError(Throwable throwable) {
         setLoading(false);
-        String errorMessage = (throwable instanceof HttpException || throwable instanceof IOException)
-                ? mResources.getString(R.string.connection_error)
-                : mResources.getString(R.string.error);
-        setErrorMessage(errorMessage);
+        int errorMessage = (throwable instanceof HttpException || throwable instanceof IOException)
+                ? R.string.connection_error
+                : R.string.error;
+        notifyMessage(errorMessage);
+        setErrorMessage(mResources.getString(errorMessage));
         setErrorVisible(true);
     }
 
