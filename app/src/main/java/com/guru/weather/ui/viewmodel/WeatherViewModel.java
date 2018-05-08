@@ -120,6 +120,8 @@ public class WeatherViewModel extends AndroidBaseViewModel {
                             mForecastList.add(new CurrentWeatherViewModel(getApplication(), forecast.getFirst()));
                         }
                         if (forecast != null && forecast.getSecond() != null && !forecast.getSecond().getForecast().isEmpty()) {
+                            mForecastList.add(new HeaderViewModel(getApplication()));
+
                             for (Forecast f : forecast.getSecond().getForecast()) {
                                 mForecastList.add(new WeatherForecastViewModel(getApplication(), f));
                             }
@@ -136,6 +138,7 @@ public class WeatherViewModel extends AndroidBaseViewModel {
         if (mTemplates == null) {
             mTemplates = new HashMap<>();
             mTemplates.put(CurrentWeatherViewModel.class, new AndroidItemBinder(R.layout.layout_current_weather, BR.currentWeatherViewModel));
+            mTemplates.put(HeaderViewModel.class, new AndroidItemBinder(R.layout.list_header, BR.headerViewModel));
             mTemplates.put(WeatherForecastViewModel.class, new AndroidItemBinder(R.layout.weather_forecast_item, BR.weatherViewModel));
         }
         return mTemplates;

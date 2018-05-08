@@ -18,5 +18,6 @@
     <string name="places_key">AIzaSyDWyer-rrNHr_B3-JDL-_KUnUGxRSd1BoU</string>
     <string name="berlin">Berlin</string>
     <string name="item_clicked">RV ItemClicked</string>
+    <string name="ten_days_forecast">10 Days Forecast</string>
 
 </resources>
