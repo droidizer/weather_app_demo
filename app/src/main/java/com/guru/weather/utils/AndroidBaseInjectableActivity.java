@@ -3,6 +3,10 @@ package com.guru.weather.utils;
 
 import com.guru.weather.misc.ClickDelegate;
 import com.guru.weather.misc.ClickItemWrapper;
+import com.guru.weather.misc.MessageDelegate;
+import com.guru.weather.misc.MessageWrapper;
+
+import org.jetbrains.annotations.NotNull;
 
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.ViewModelProviders;
@@ -40,11 +44,19 @@ public abstract class AndroidBaseInjectableActivity extends AppCompatActivity im
 
     protected ClickDelegate mClickDelegate;
 
+    private MessageDelegate mMessageDelegate;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
+        messageDelegate();
         createClickDelegate();
+    }
+
+    protected void messageDelegate() {
+        mMessageDelegate = ViewModelProviders.of(this).get(MessageDelegate.class);
+        mMessageDelegate.setActivity(this);
     }
 
     protected void createClickDelegate() {
@@ -71,6 +83,7 @@ public abstract class AndroidBaseInjectableActivity extends AppCompatActivity im
             mViewDataBinding.setVariable(bindingVariable, androidViewModel);
             registerForLifeCycle(androidViewModel);
             setContentView(mViewDataBinding.getRoot());
+            subscribeMessageNotifier();
             subscribeClickEvent();
         } else {
             setContentView(layoutResID);
@@ -87,6 +100,16 @@ public abstract class AndroidBaseInjectableActivity extends AppCompatActivity im
         }
     }
 
+    private void subscribeMessageNotifier() {
+        if (mAndroidBaseViewModel != null) {
+            mAndroidBaseViewModel.getErrorMessageNotifier()
+                    .observe(this, this::showMessage);
+        }
+    }
+
+    protected void showMessage(@NotNull MessageWrapper messageWrapper) {
+        mMessageDelegate.showMessage(messageWrapper);
+    }
     @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {
         return fragmentDispatchingAndroidInjector;
@@ -108,6 +131,9 @@ public abstract class AndroidBaseInjectableActivity extends AppCompatActivity im
         }
         mLifecycleObservers.clear();
         mINeedClickListenerList.clear();
+        if (mMessageDelegate != null) {
+            mMessageDelegate.clear();
+        }
     }
 
     public void registerForLifeCycle(LifecycleObserver lifecycleObserver) {

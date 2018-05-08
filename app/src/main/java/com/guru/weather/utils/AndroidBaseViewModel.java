@@ -1,6 +1,7 @@
 package com.guru.weather.utils;
 
 import com.guru.weather.misc.ClickItemWrapper;
+import com.guru.weather.misc.MessageWrapper;
 import com.guru.weather.misc.SingleLiveEvent;
 
 import android.app.Application;
@@ -16,6 +17,8 @@ public class AndroidBaseViewModel extends AndroidViewModel implements Observable
     private transient PropertyChangeRegistry mCallbacks;
 
     protected SingleLiveEvent<ClickItemWrapper> mItemClickNotifier = new SingleLiveEvent<>();
+
+    private SingleLiveEvent<MessageWrapper> mErrorMessageNotifier = new SingleLiveEvent<>();
 
     public AndroidBaseViewModel(Application application) {
         super(application);
@@ -87,8 +90,20 @@ public class AndroidBaseViewModel extends AndroidViewModel implements Observable
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     public void onDestroy() {}
 
+    public void notifyMessage(int message) {
+        notifyMessage(MessageWrapper.withToast(message));
+    }
+
+    protected void notifyMessage(MessageWrapper message) {
+        mErrorMessageNotifier.setValue(message);
+    }
+
     @Override
     public SingleLiveEvent<ClickItemWrapper> getItemClickListenerNotifier() {
         return mItemClickNotifier;
+    }
+
+    public SingleLiveEvent<MessageWrapper> getErrorMessageNotifier() {
+        return mErrorMessageNotifier;
     }
 }
