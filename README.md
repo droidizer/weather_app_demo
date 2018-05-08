@@ -4,8 +4,6 @@ MVVM architecture using Arch components, RX java, Data binding and Dagger
 
 - Todo 
 
-Add header for list
-
 Add search for cities 
 
 Convert to Kotlin 
