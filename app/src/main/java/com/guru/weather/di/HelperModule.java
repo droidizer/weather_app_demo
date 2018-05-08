@@ -10,11 +10,11 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-class HelperModule {
+public class HelperModule {
 
-    private static final String WEATHER_API_KEY = "WeatherApiKey";
+    public static final String WEATHER_API_KEY = "WeatherApiKey";
 
-    private static final String PLACES_API_KEY = "PlacesApiKey";
+    public static final String PLACES_API_KEY = "PlacesApiKey";
 
     @Provides
     @Named(WEATHER_API_KEY)
