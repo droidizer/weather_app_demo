@@ -2,7 +2,10 @@
 This app uses the following: 
 
 MVVM architecture using Arch components, RX java, Data binding and Dagger. 
+
 Parts of this demo project is in Kotlin. :) 
+
+Currently the app shows current weather and 10 days forecast for Berlin. 
 
 - Todo 
 
