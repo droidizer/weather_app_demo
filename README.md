@@ -7,6 +7,8 @@ Parts of this demo project is in Kotlin. :)
 
 Currently the app shows current weather and 10 days forecast for Berlin. 
 
+Not pursuing a detail view because there is limited data available to show a detail view. 
+
 - Todo 
 
 Add search for cities 
