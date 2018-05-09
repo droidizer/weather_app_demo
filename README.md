@@ -1,6 +1,8 @@
 # weather-app
 This app uses the following: 
-MVVM architecture using Arch components, RX java, Data binding and Dagger
+
+MVVM architecture using Arch components, RX java, Data binding and Dagger. 
+Parts of this demo project is in Kotlin. :) 
 
 - Todo 
 
